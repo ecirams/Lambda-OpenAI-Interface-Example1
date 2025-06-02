@@ -1,0 +1,46 @@
+name: Deploy Lambda Function
+
+on:
+  push:
+    # Trigger the workflow on push to the main branch
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure pip is installed
+        run: sudo apt-get update && sudo apt-get install -y python3-pip
+      - name: Install zip tool
+        uses: montudor/action-zip@v1
+      - name: Install dependencies from requirements.txt
+        run: |
+          set -e
+          cd src
+          pip3 install -r requirements.txt -t .
+      - name: Create Zip file for Lambda Function
+        run: cd src && zip -r code.zip .
+      - name: AWS CLI v2
+        uses: imehedi/actions-awscli-v2@latest
+        with:
+          args: "lambda update-function-code \
+            --function-name arn:aws:lambda:us-east-1:632455625491:function:TestCICDFunction \
+            --zip-file fileb://src/code.zip"
+        env:
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          AWS_DEFAULT_REGION: "us-east-1"
+      - name: Verify Lambda Deployment
+        run: |
+          aws lambda invoke \
+            --function-name arn:aws:lambda:us-east-1:632455625491:function:TestCICDFunction \
+            --payload '{}' \
+            --cli-binary-format raw-in-base64-out \
+            response.json
+          cat response.json
+        env:
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          AWS_DEFAULT_REGION: "us-east-1"
