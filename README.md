@@ -3,6 +3,8 @@
 [![OpenAI](https://a11ybadges.com/badge?logo=openai)](https://platform.openai.com/)
 [![Amazon AWS](https://a11ybadges.com/badge?logo=amazonaws)](https://aws.amazon.com/)
 [![Python](https://a11ybadges.com/badge?logo=python)](https://www.python.org/)
+[![GitHub](https://a11ybadges.com/badge?logo=github)](https://a11ybadges.com/badge?logo=github)
+[![GitHubActions](https://a11ybadges.com/badge?logo=githubactions)](https://a11ybadges.com/badge?logo=githubactions)
 <BR>
 
 # **Description**
@@ -50,5 +52,10 @@ Verify Project requirements: [AWS Account](https://aws.amazon.com/free/) and [Py
     - Back to  Lambda function.  Refresh the page
     - Deploy the funciton & test
 6.  Access the lambda function from the browser using the Function URL copied in step Step 3
+
+7. deployLambdaFunction.yml helps to deploy function using GitHub Actions. If planned to use GitHub Actions, then make the following changes to  [deployLambdaFunction.yml](./.github/workflows/deployLambdaFunction.yml)
+    - Change the lambda function ARN in lines 29 & 38
+    - Change AWS_DEFAULT_REGION in lines 34 & 46 with correct region
+    - Add secret keys AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY with values in GitHub Repository
 
 ```
