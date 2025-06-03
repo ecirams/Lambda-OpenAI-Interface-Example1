@@ -19,6 +19,7 @@ jobs:
         run: |
           set -e
           cd src
+          rm -rf __pycache__ *.dist-info *.egg-info
           pip3 install -r requirements.txt -t .
       - name: Create Zip file for Lambda Function
         run: cd src && zip -r code.zip .
