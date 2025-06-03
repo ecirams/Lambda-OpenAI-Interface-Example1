@@ -20,6 +20,7 @@ jobs:
           set -e
           cd src
           rm -rf __pycache__ *.dist-info *.egg-info
+          rm -rf pydantic*  # <--- Add this to remove old pydantic files
           pip3 install -r requirements.txt -t .
       - name: Create Zip file for Lambda Function
         run: cd src && zip -r code.zip .
